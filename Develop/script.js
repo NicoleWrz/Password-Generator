@@ -1,14 +1,18 @@
-// DATA 
 var generatePasswordBtn = document.getElementById("generate");
 
 function generatePassword() {
   var userChoiceLength = parseInt(prompt("Enter the length of your desired password between 8 - 128 characters"))
 
   if (isNaN(userChoiceLength)) {
-    alert("You must enter a number between 8 and 128.")
+    alert("You must enter a number between 8 and 128.");
+    return generatePassword();
   }
 
-//array for special, lower, upper, numeric characters
+  if (userChoiceLength < 8 || userChoiceLength > 128) {
+    alert("The length must be between 8 and 128.");
+    return generatePassword();
+  }
+
   var specialChars = "~!@#$%^&*_+=".split("");
   var lowerChars = "abcdefghijklmnopqrstuvwxyz".split("");
   var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -16,19 +20,14 @@ function generatePassword() {
 
   var passwordArr = []; 
 
-// User choices of length, special chars, upper, lower, number
   var userChoiceSpecial = confirm("Including special characters?");
   var userChoiceUpper = confirm("Including uppercase characters?");
   var userChoiceLower = confirm("Including lowercase characters?");
   var userChoiceNumberic = confirm("Including any numbers?");
 
-    if (userChoiceLength < 8 || userChoiceLength > 128 ) {
-      alert("The length must be between 8 and 128.")
-    }
-
-  if (userChoiceSpecial === false && userChoiceUpper === false &&
-    userChoiceLower === false && userChoiceNumberic === false) {
-      alert("You must choose at least one character set.")
+  if (userChoiceSpecial === false && userChoiceUpper === false && userChoiceLower === false && userChoiceNumberic === false) {
+      alert("You must choose at least one character set.");
+      return generatePassword();
     }
 
   var userCharPool = []; 
@@ -45,7 +44,6 @@ function generatePassword() {
 
   if (userChoiceUpper) {
     userCharPool = userCharPool.concat(upperChars)
-    console.log(userCharPool);
   }
 
   if(userChoiceLower) {
@@ -54,34 +52,20 @@ function generatePassword() {
 
   if (userChoiceNumberic) {
     userCharPool = userCharPool.concat(numericChars);
-    console.log(userCharPool);
   };
 
   for (var i = 0; i < userChoiceLength; i++) {
     var index = Math.floor( Math.random() * userCharPool.length );
-    console.log(userCharPool[index]);
     passwordArr.push(userCharPool[index]);
   }
-  console.log(passwordArr);
 
-// TODO: create a guarenteed array to store 1 random character from each of user chosen character set.
-// then replace the first password array elements with these gaurenteed characters
+  var passwordString = passwordArr.join("");
 
-// meaning: pool created -> random number selects -> random number doesnt guarenntee all sets lie upper lower and number will be chosen
-// empty guarenntee array - push 1 index to select all 4 
+  console.log(passwordString);
 
-
-
-// TODO: convert password array to a string, then return that string to the caller, writePassword
-  console.log(passwordArr.join(""));
-
-// make generate passsword function
-  for (let i = 0; i < length; i++) {
-   myPassword += selectedSet[Math.floor(Math.random() * selectedSet.length)];
-  }
+  return passwordString;
 };
 
-//MAIN PROCESS
 function writePassword () {
   var password = generatePassword();
   var passwordTextEl = document.getElementById("password");
